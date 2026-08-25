@@ -552,331 +552,6 @@
     .group-indicator{font-size:11px;gap:3px;}
   }
 
-  /* =========================================================================
-     SPACE-INSPIRED UI
-     Visual layer only — application logic and existing IDs are unchanged.
-     ========================================================================= */
-  :root{
-    --brand:#ffffff;
-    --brand-dark:#d7d7d7;
-    --brand-light:#202020;
-    --ink:#ffffff;
-    --muted:#8b8b8b;
-    --paper:#050505;
-    --card:#0b0b0b;
-    --line:#292929;
-    --success:#8ee28e;
-    --danger:#ff6b6b;
-  }
-
-  html{background:#050505;}
-  body{
-    background:
-      radial-gradient(circle at 50% -10%, rgba(255,255,255,.07), transparent 34%),
-      linear-gradient(180deg,#050505 0%,#070707 45%,#050505 100%);
-    color:var(--ink);
-    font-family:'Inter',Arial,sans-serif;
-  }
-
-  header.scoreboard{
-    background:#050505;
-    color:#fff;
-    padding:58px 20px 42px;
-    box-shadow:none;
-    border-bottom:1px solid #202020;
-  }
-  header.scoreboard::after{
-    height:1px;
-    background:#fff;
-    opacity:.65;
-  }
-  header.scoreboard h1{
-    font-family:'Inter',Arial,sans-serif;
-    font-weight:700;
-    font-size:clamp(30px,6vw,52px);
-    letter-spacing:5px;
-    margin:0 0 15px;
-    color:#fff;
-  }
-  header.scoreboard p{
-    color:#aaa;
-    background:transparent;
-    border:1px solid #333;
-    border-radius:0;
-    padding:7px 13px;
-    font-size:10px;
-    letter-spacing:2px;
-  }
-
-  .group-indicator{
-    color:#777;
-    margin-top:18px;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    font-size:10px;
-  }
-  .group-indicator strong{color:#fff;}
-  .group-indicator button:hover{color:#fff;}
-  .group-indicator .sep{color:#444;}
-
-  .banner{
-    background:#111;
-    color:#ddd;
-    border-bottom:1px solid #292929;
-    box-shadow:none;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.7px;
-  }
-  .banner strong{color:#fff;}
-
-  .backup-row{
-    background:#050505;
-    padding:18px 20px;
-    border-bottom:1px solid #1d1d1d;
-  }
-
-  nav.tabs{
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:rgba(5,5,5,.96);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid #252525;
-    padding:0 12px;
-    gap:0;
-  }
-  nav.tabs button{
-    min-width:110px;
-    border-radius:0;
-    color:#777;
-    padding:17px 16px 15px;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    border-bottom:2px solid transparent;
-  }
-  nav.tabs button:hover{
-    color:#fff;
-    background:#0c0c0c;
-  }
-  nav.tabs button.active{
-    color:#fff;
-    background:transparent;
-    box-shadow:none;
-    border-bottom-color:#fff;
-  }
-
-  main{
-    max-width:1080px;
-    padding:46px 20px 90px;
-  }
-
-  .card{
-    background:rgba(11,11,11,.96);
-    border:1px solid #292929;
-    border-radius:0;
-    padding:30px;
-    margin-bottom:20px;
-    box-shadow:0 16px 40px -30px rgba(255,255,255,.18);
-  }
-  .card h2{
-    font-family:'Inter',Arial,sans-serif;
-    font-weight:600;
-    font-size:19px;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    color:#fff;
-  }
-  .card .sub{
-    color:#777;
-    font-size:14px;
-  }
-
-  label{
-    color:#777;
-    font-size:10px;
-    letter-spacing:1.4px;
-  }
-
-  input[type=text], input[type=date], select, textarea{
-    border:1px solid #333;
-    border-radius:0;
-    background:#070707;
-    color:#fff;
-    padding:12px 13px;
-  }
-  input:focus, select:focus, textarea:focus{
-    border-color:#fff;
-    box-shadow:0 0 0 1px #fff;
-  }
-
-  .btn{
-    background:#fff;
-    color:#000;
-    border:1px solid #fff;
-    border-radius:0;
-    box-shadow:none;
-    text-transform:uppercase;
-    letter-spacing:1px;
-    font-size:10px;
-    font-weight:700;
-    padding:12px 18px;
-  }
-  .btn:hover{
-    background:#d8d8d8;
-    color:#000;
-    transform:none;
-    box-shadow:none;
-  }
-  .btn:active{transform:none;}
-  .btn.gold{
-    background:#fff;
-    color:#000;
-    box-shadow:none;
-  }
-  .btn.gold:hover{background:#d8d8d8;}
-  .btn.ghost{
-    background:transparent;
-    color:#fff;
-    border:1px solid #444;
-  }
-  .btn.ghost:hover{
-    background:#151515;
-    color:#fff;
-    border-color:#777;
-    box-shadow:none;
-    transform:none;
-  }
-
-  details.bulk{
-    border:1px dashed #333;
-    border-radius:0;
-    background:#080808;
-  }
-  details.bulk summary{color:#fff;text-transform:uppercase;letter-spacing:1px;font-size:10px;}
-  details.bulk code{background:#171717;color:#ddd;border-radius:0;}
-
-  .fixture-row,
-  .game-block{
-    border-bottom-color:#252525;
-  }
-  .rnd-badge{
-    background:#161616;
-    color:#fff;
-    border:1px solid #333;
-    border-radius:0;
-    text-transform:uppercase;
-    letter-spacing:.7px;
-  }
-  .game-meta{
-    color:#666;
-    letter-spacing:1.2px;
-  }
-  .vs{color:#666;}
-
-  .team-toggle{
-    border:1px solid #333;
-    border-radius:0;
-  }
-  .team-toggle button{
-    background:#0b0b0b;
-    color:#fff;
-    border-right:1px solid #333;
-    border-radius:0;
-  }
-  .team-toggle button:hover{
-    background:#161616;
-  }
-
-  table.ladder{
-    color:#fff;
-  }
-  table.ladder th{
-    color:#666;
-    border-bottom:1px solid #fff;
-    letter-spacing:1.2px;
-  }
-  table.ladder td{
-    border-bottom:1px solid #242424;
-  }
-  table.ladder tbody tr:hover td{background:#111;}
-  table.ladder tr:first-child td{
-    font-weight:700;
-    background:#101010;
-  }
-  .points-cell{
-    color:#fff;
-    font-family:'Inter',Arial,sans-serif;
-  }
-  .bar-wrap{background:#252525;border-radius:0;height:4px;}
-  .bar{background:#fff;}
-
-  .grid-matrix th{
-    background:#fff;
-    color:#000;
-    border-color:#333;
-  }
-  .grid-matrix th,.grid-matrix td{
-    border-color:#292929;
-  }
-
-  .tipper-chip{
-    border:1px solid #333;
-    border-radius:0;
-    background:#090909;
-    color:#aaa;
-  }
-  .tipper-chip:hover{
-    color:#fff;
-    border-color:#666;
-  }
-  .tipper-chip.active{
-    background:#fff;
-    color:#000;
-    border-color:#fff;
-  }
-
-  .empty{color:#666;}
-  .empty .big{color:#fff;}
-  .status-line{color:#666;}
-  .del-x{color:#aaa;}
-  .del-x:hover{color:#fff;}
-
-  footer.credit{
-    background:#050505;
-    border-top:1px solid #1d1d1d;
-    color:#555;
-    text-transform:uppercase;
-    letter-spacing:1px;
-  }
-  .reset-link{color:#555;}
-  .reset-link:hover{color:#fff;}
-
-  #groupGate{
-    background:
-      radial-gradient(circle at 50% 35%, rgba(255,255,255,.07), transparent 30%),
-      #050505;
-  }
-  #groupGate .card{
-    background:#090909;
-    border-color:#333;
-  }
-
-  @media (max-width:640px){
-    nav.tabs button{min-width:0;}
-    .card{padding:22px;}
-  }
-  @media (max-width:480px){
-    header.scoreboard{padding:42px 14px 30px;}
-    header.scoreboard h1{font-size:27px;letter-spacing:3px;}
-    main{padding:28px 10px 60px;}
-    .card{border-radius:0;padding:20px;}
-    .backup-row{flex-direction:row;padding:12px 14px;}
-    .backup-row .btn{width:auto;flex:1;}
-  }
-
-
   /* Older-adult accessibility: larger text, strong contrast and clearer controls */
   body, button, input, select, textarea { -webkit-text-size-adjust:100%; }
   button, input, select, textarea { min-height:46px; }
@@ -1074,32 +749,6 @@
 (function(){
   "use strict";
 
-  /* =========================================================================
-     DATABASE SETUP — read this before using the sheet.
-
-     This page stores its data in a free Supabase project instead of relying
-     on Claude. To connect it:
-
-     1. Create a free project at https://supabase.com (no credit card needed).
-     2. In the SQL Editor, run:
-
-          create table footy_tipping (
-            key text primary key,
-            value jsonb not null,
-            updated_at timestamptz default now()
-          );
-          alter table footy_tipping enable row level security;
-          create policy "public read" on footy_tipping for select using (true);
-          create policy "public write" on footy_tipping for insert with check (true);
-          create policy "public update" on footy_tipping for update using (true);
-
-     3. In Project Settings > API, copy your "Project URL" and "anon public" key.
-     4. Paste them into the two constants directly below, replacing the
-        placeholder text, then re-upload this file wherever you're hosting it.
-
-     Anyone with this page's URL can read and write the data (same as anyone
-     you share the link with tipping normally) — don't post the link publicly.
-     ========================================================================= */
   const SUPABASE_URL = "https://yrevkjrichztuceguhaq.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_gX8iR-bw0E5Vmr2ruBUNsQ_lQS__Mr-";
   const SUPABASE_TABLE = "footy_tipping";
@@ -1110,15 +759,6 @@
         && SUPABASE_URL.indexOf("http") === 0;
   }
 
-  // ---------- GROUP ISOLATION ----------
-  // Each group's data lives under its own key prefix in the same Supabase
-  // table, so ten groups can share one deployment without seeing each
-  // other's tippers, fixtures, or results. Note this is separation by
-  // obscurity, not real access control — anyone who knows or guesses a
-  // group's exact name could still query it directly via the Supabase
-  // REST API, the same way anyone with a shared link could. Fine for
-  // keeping a footy tipping crowd apart; not a substitute for real auth
-  // if the data were ever sensitive.
   let currentGroup = null;
 
   function slugifyGroup(raw){
@@ -1236,7 +876,6 @@
   let activeTipper = null;
   let activeTab = "fixtures";
 
-  // ---------- storage helpers (Supabase REST / PostgREST) ----------
   async function storGet(key){
     if(!supabaseConfigured()) return null;
     const scopedKey = currentGroup + ":" + key;
@@ -1286,7 +925,6 @@
     }
   }
 
-  // ---------- init ----------
   async function loadAll(){
     const [t, f, r, tp] = await Promise.all([
       storGet("tippers"), storGet("fixtures"), storGet("results"), storGet("tips")
@@ -1331,7 +969,6 @@
     });
   }
 
-  // ---------- FIXTURES TAB ----------
   function renderFixtureList(){
     const wrap = document.getElementById("fixtureList");
     if(fixtures.length === 0){
@@ -1466,7 +1103,6 @@
     }
   });
 
-  // ---------- TIPS TAB ----------
   function renderTipsTipperChips(){
     const wrap = document.getElementById("tipsTipperChips");
     if(tippers.length === 0){
@@ -1557,7 +1193,6 @@
     setStatus("tipsStatus", ok ? "Tips saved for "+activeTipper+"." : "Saved locally, but couldn't sync — see banner above.", ok?"ok":"err");
   });
 
-  // ---------- RESULTS TAB ----------
   function renderResultsGames(){
     const wrap = document.getElementById("resultsGamesList");
     const round = currentRound("resultsRoundSelect");
@@ -1669,7 +1304,6 @@
     if(applied>0) document.getElementById("bulkResultsText").value = "";
   });
 
-  // ---------- LADDER TAB ----------
   function computeScores(){
     return tippers.map(name=>{
       let points = 0, played = 0;
@@ -1735,7 +1369,6 @@
     matrixWrap.innerHTML = mhtml;
   }
 
-  // ---------- TABS ----------
   document.getElementById("tabNav").addEventListener("click", (e)=>{
     const btn = e.target.closest("button[data-tab]");
     if(!btn) return;
@@ -1748,7 +1381,6 @@
     if(activeTab==="results") renderResultsGames();
   });
 
-  // ---------- BACKUP / RESTORE ----------
   function exportData(){
     const payload = {tippers, fixtures, results, tips, exportedAt: new Date().toISOString()};
     const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
@@ -1822,7 +1454,6 @@
     return true;
   }
 
-  // ---------- RESET ----------
   document.getElementById("resetBtn").addEventListener("click", async ()=>{
     if(!confirm(`Clear all fixtures, tippers, tips and results for the "${currentGroup}" group? This can't be undone, and won't affect any other group.`)) return;
     tippers = []; fixtures = []; results = {}; tips = {};
@@ -1841,13 +1472,12 @@
     ]);
   });
 
-  // ---------- BOOT ----------
   (async function boot(){
     currentGroup = resolveGroupFromUrl();
     if(!currentGroup){
       document.getElementById("groupGate").style.display = "flex";
       document.getElementById("appRoot").style.display = "none";
-      return; // wait for enterGroup() to reload with ?group=...
+      return;
     }
     document.getElementById("groupGate").style.display = "none";
     document.getElementById("appRoot").style.display = "block";

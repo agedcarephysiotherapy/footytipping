@@ -467,6 +467,34 @@
     cursor:pointer;
     font-family:'Inter',sans-serif;
   }
+  #groupGate{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  #groupGate .card{
+    max-width:420px;
+    width:100%;
+  }
+  .group-indicator{
+    font-family:'Inter',sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:10px;
+  }
+  .group-indicator strong{color:var(--brand);}
+  .group-indicator button{
+    background:none;border:none;
+    color:var(--muted);
+    text-decoration:underline;
+    font-size:12px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    padding:0;
+    margin-left:6px;
+  }
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important;}
   }
@@ -474,9 +502,24 @@
 </head>
 <body>
 
+<div id="groupGate">
+  <div class="card">
+    <h2>Name Your Tipping Group</h2>
+    <p class="sub">Each group has its own tippers, fixtures and ladder — nobody outside a group sees its data. Enter your group's name to open it, or make one up to start a new group.</p>
+    <label for="groupInput">Group Name</label>
+    <input type="text" id="groupInput" placeholder="e.g. Bundoora Boys, Smith Family">
+    <div style="height:12px;"></div>
+    <button class="btn gold" id="groupEnterBtn" style="width:100%;">Enter Group</button>
+    <div class="status-line" id="groupStatus"></div>
+  </div>
+</div>
+
+<div id="appRoot" style="display:none;">
+
 <header class="scoreboard">
   <h1>Footy Tipping Ledger</h1>
   <p>Season Comp &middot; Up to 50 Tippers</p>
+  <div class="group-indicator">Group: <strong id="groupNameDisplay"></strong><button id="switchGroupBtn">Switch group</button></div>
 </header>
 
 <div class="banner" id="storageBanner" style="display:none;"></div>
@@ -622,6 +665,8 @@
   <button class="reset-link" id="resetBtn">Reset all data</button>
 </footer>
 
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -661,6 +706,57 @@
         && SUPABASE_ANON_KEY.indexOf("YOUR-ANON-PUBLIC-KEY") === -1
         && SUPABASE_URL.indexOf("http") === 0;
   }
+
+  // ---------- GROUP ISOLATION ----------
+  // Each group's data lives under its own key prefix in the same Supabase
+  // table, so ten groups can share one deployment without seeing each
+  // other's tippers, fixtures, or results. Note this is separation by
+  // obscurity, not real access control — anyone who knows or guesses a
+  // group's exact name could still query it directly via the Supabase
+  // REST API, the same way anyone with a shared link could. Fine for
+  // keeping a footy tipping crowd apart; not a substitute for real auth
+  // if the data were ever sensitive.
+  let currentGroup = null;
+
+  function slugifyGroup(raw){
+    return raw.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  function resolveGroupFromUrl(){
+    const params = new URLSearchParams(window.location.search);
+    const g = params.get("group");
+    return g ? slugifyGroup(g) : null;
+  }
+
+  function enterGroup(rawName){
+    const slug = slugifyGroup(rawName);
+    if(!slug){
+      document.getElementById("groupStatus").textContent = "Enter a group name first.";
+      document.getElementById("groupStatus").className = "status-line err";
+      return;
+    }
+    try{ localStorage.setItem("lastFootyGroup", rawName.trim()); }catch(e){}
+    const params = new URLSearchParams(window.location.search);
+    params.set("group", slug);
+    window.location.search = params.toString();
+  }
+
+  document.getElementById("groupEnterBtn").addEventListener("click", ()=>{
+    enterGroup(document.getElementById("groupInput").value);
+  });
+  document.getElementById("groupInput").addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") enterGroup(e.target.value);
+  });
+  document.getElementById("switchGroupBtn").addEventListener("click", ()=>{
+    const params = new URLSearchParams(window.location.search);
+    params.delete("group");
+    const base = window.location.pathname + (params.toString() ? "?"+params.toString() : "");
+    window.location.href = base;
+  });
+  try{
+    const last = localStorage.getItem("lastFootyGroup");
+    if(last) document.getElementById("groupInput").value = last;
+  }catch(e){}
 
   const MAX_TIPPERS = 50;
 
@@ -710,9 +806,10 @@
   // ---------- storage helpers (Supabase REST / PostgREST) ----------
   async function storGet(key){
     if(!supabaseConfigured()) return null;
+    const scopedKey = currentGroup + ":" + key;
     try{
       const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?key=eq.${encodeURIComponent(key)}&select=value`,
+        `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?key=eq.${encodeURIComponent(scopedKey)}&select=value`,
         { headers: {
             "apikey": SUPABASE_ANON_KEY,
             "Authorization": "Bearer " + SUPABASE_ANON_KEY
@@ -729,6 +826,7 @@
 
   async function storSet(key, value){
     if(!supabaseConfigured()) return false;
+    const scopedKey = currentGroup + ":" + key;
     try{
       const res = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
         method: "POST",
@@ -738,7 +836,7 @@
           "Content-Type": "application/json",
           "Prefer": "resolution=merge-duplicates,return=minimal"
         },
-        body: JSON.stringify([{key, value}])
+        body: JSON.stringify([{key: scopedKey, value}])
       });
       return res.ok;
     }catch(e){
@@ -1293,7 +1391,7 @@
 
   // ---------- RESET ----------
   document.getElementById("resetBtn").addEventListener("click", async ()=>{
-    if(!confirm("Clear all fixtures, tippers, tips and results for everyone using this sheet? This can't be undone.")) return;
+    if(!confirm(`Clear all fixtures, tippers, tips and results for the "${currentGroup}" group? This can't be undone, and won't affect any other group.`)) return;
     tippers = []; fixtures = []; results = {}; tips = {};
     renderTippersTextarea();
     renderFixtureList();
@@ -1311,7 +1409,17 @@
   });
 
   // ---------- BOOT ----------
-  (async function init(){
+  (async function boot(){
+    currentGroup = resolveGroupFromUrl();
+    if(!currentGroup){
+      document.getElementById("groupGate").style.display = "flex";
+      document.getElementById("appRoot").style.display = "none";
+      return; // wait for enterGroup() to reload with ?group=...
+    }
+    document.getElementById("groupGate").style.display = "none";
+    document.getElementById("appRoot").style.display = "block";
+    document.getElementById("groupNameDisplay").textContent = currentGroup;
+
     populateTeamSelects();
     await loadAll();
     renderTippersTextarea();

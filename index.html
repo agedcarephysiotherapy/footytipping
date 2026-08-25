@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footy Tipping Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#CC3300;
+    --brand-dark:#A32900;
+    --brand-light:#F7E4DA;
+    --ink:#2B2925;
+    --muted:#7A756D;
+    --paper:#FAF8F5;
+    --card:#FFFFFF;
+    --line:#E7E1D8;
+    --success:#2F7D4F;
+    --danger:#B23A2E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  header.scoreboard{
+    background:var(--card);
+    color:var(--ink);
+    padding:32px 20px 26px;
+    text-align:center;
+    border-bottom:4px solid var(--brand);
+    position:relative;
+  }
+  header.scoreboard h1{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:clamp(26px,5.5vw,38px);
+    letter-spacing:-0.5px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  header.scoreboard p{
+    display:inline-block;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--brand);
+    background:var(--brand-light);
+    padding:5px 14px;
+    border-radius:20px;
+    margin:0;
+  }
+  .banner{
+    background:var(--brand-dark);
+    color:#fff;
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:500;
+    line-height:1.6;
+    padding:12px 16px;
+    text-align:center;
+  }
+  .banner strong{color:#fff;text-decoration:underline;text-underline-offset:2px;}
+  .backup-row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:16px 20px 18px;
+  }
+  .backup-row .btn{font-size:12px;padding:9px 14px;}
+  nav.tabs{
+    display:flex;
+    justify-content:center;
+    gap:0;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  nav.tabs button{
+    flex:1 1 auto;
+    min-width:110px;
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    color:var(--muted);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.2px;
+    padding:16px 10px;
+    cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  nav.tabs button:hover{color:var(--ink);}
+  nav.tabs button.active{
+    color:var(--brand);
+    border-bottom-color:var(--brand);
+  }
+  main{
+    max-width:840px;
+    margin:0 auto;
+    padding:24px 16px 80px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    margin-bottom:18px;
+    box-shadow:0 1px 3px rgba(43,41,37,0.04);
+  }
+  .card h2{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    letter-spacing:-0.2px;
+    margin:0 0 4px;
+    color:var(--ink);
+  }
+  .card .sub{
+    font-size:13.5px;
+    color:var(--muted);
+    margin:0 0 16px;
+    line-height:1.5;
+  }
+  label{
+    display:block;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:5px;
+    font-family:'Inter',sans-serif;
+  }
+  input[type=text], input[type=date], select, textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    background:var(--paper);
+    color:var(--ink);
+  }
+  textarea{
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    resize:vertical;
+    min-height:100px;
+    line-height:1.6;
+  }
+  input:focus, select:focus, textarea:focus, button:focus-visible{
+    outline:2px solid var(--brand);
+    outline-offset:1px;
+    border-color:var(--brand);
+  }
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .row3{
+    display:grid;
+    grid-template-columns:80px 1fr 1fr 130px auto;
+    gap:8px;
+    align-items:end;
+    margin-bottom:10px;
+  }
+  @media (max-width:640px){
+    .row3{grid-template-columns:1fr 1fr;}
+  }
+  .btn{
+    background:var(--brand);
+    color:#fff;
+    border:none;
+    padding:11px 18px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    border-radius:8px;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .btn:hover{background:var(--brand-dark);}
+  .btn:active{transform:scale(0.98);}
+  .btn.gold{background:var(--ink);color:#fff;}
+  .btn.gold:hover{background:#000;}
+  .btn.ghost{
+    background:transparent;
+    color:var(--brand);
+    border:1.5px solid var(--brand);
+  }
+  .btn.ghost:hover{background:var(--brand-light);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  details.bulk{
+    border:1.5px dashed var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:16px;
+    background:var(--paper);
+  }
+  details.bulk summary{
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:var(--brand);
+  }
+  details.bulk .help{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:10px 0;
+    line-height:1.6;
+  }
+  details.bulk code{
+    background:var(--brand-light);
+    color:var(--brand-dark);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:11.5px;
+    font-weight:600;
+  }
+  .import-summary{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    margin-top:10px;
+  }
+  .import-summary.ok{color:var(--success);}
+  .import-summary.warn{color:var(--danger);}
+  .error-list{
+    margin:8px 0 0;
+    padding-left:18px;
+    font-size:12.5px;
+    color:var(--danger);
+    max-height:160px;
+    overflow-y:auto;
+  }
+  .error-list li{margin-bottom:3px;}
+
+  .fixture-row{
+    display:grid;
+    grid-template-columns:48px 1fr auto;
+    align-items:center;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .fixture-row:last-child{border-bottom:none;}
+  .rnd-badge{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:12px;
+    background:var(--brand-light);
+    color:var(--brand-dark);
+    padding:4px 7px;
+    border-radius:6px;
+    text-align:center;
+  }
+  .matchup{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .swatch{
+    display:inline-block;
+    width:10px;height:10px;
+    border-radius:50%;
+    flex:none;
+    border:1px solid rgba(0,0,0,0.15);
+  }
+  .vs{color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;}
+
+  .team-toggle{
+    display:flex;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    margin:6px 0 14px;
+  }
+  .team-toggle button{
+    flex:1;
+    border:none;
+    background:var(--card);
+    padding:13px 8px;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    color:var(--ink);
+    border-right:1.5px solid var(--line);
+    text-align:center;
+  }
+  .team-toggle button:last-child{border-right:none;}
+  .team-toggle button.selected{
+    color:#fff;
+  }
+  .game-block{
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .game-block:last-child{border-bottom:none;}
+  .game-meta{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:11.5px;
+    color:var(--muted);
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+
+  table.ladder{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14.5px;
+  }
+  table.ladder th{
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:11.5px;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    color:var(--muted);
+    border-bottom:2px solid var(--ink);
+    padding:9px 6px;
+  }
+  table.ladder td{
+    padding:10px 6px;
+    border-bottom:1px solid var(--line);
+  }
+  table.ladder tr:first-child td{
+    font-weight:700;
+  }
+  .points-cell{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:17px;
+    color:var(--brand);
+  }
+  .bar-wrap{
+    background:var(--line);
+    height:7px;
+    border-radius:4px;
+    overflow:hidden;
+    margin-top:4px;
+  }
+  .bar{
+    height:100%;
+    background:var(--brand);
+  }
+  .grid-matrix{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    margin-top:10px;
+  }
+  .grid-matrix th, .grid-matrix td{
+    border:1px solid var(--line);
+    padding:7px 6px;
+    text-align:center;
+    white-space:nowrap;
+  }
+  .grid-matrix th{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:10.5px;
+    background:var(--ink);
+    color:#fff;
+  }
+  .tick{color:var(--success);font-weight:700;}
+  .cross{color:var(--danger);font-weight:700;}
+  .dash{color:var(--muted);}
+
+  .empty{
+    text-align:center;
+    padding:32px 10px;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .empty .big{
+    font-family:'Poppins',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--ink);
+    display:block;
+    margin-bottom:6px;
+  }
+  .tipper-chip-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+    max-height:180px;
+    overflow-y:auto;
+    padding:2px;
+  }
+  .tipper-chip{
+    padding:9px 15px;
+    border:1.5px solid var(--line);
+    border-radius:20px;
+    background:var(--card);
+    cursor:pointer;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .tipper-chip.active{
+    background:var(--brand);
+    color:#fff;
+    border-color:var(--brand);
+  }
+  .status-line{
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:8px;
+    min-height:14px;
+  }
+  .status-line.ok{color:var(--success);}
+  .status-line.err{color:var(--danger);}
+  .del-x{
+    background:transparent;
+    border:none;
+    color:var(--danger);
+    cursor:pointer;
+    font-size:18px;
+    line-height:1;
+    padding:4px 6px;
+  }
+  .count-tag{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    color:var(--muted);
+    float:right;
+  }
+  footer.credit{
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:11px;
+    letter-spacing:0.2px;
+    color:var(--muted);
+    padding:22px;
+  }
+  .reset-link{
+    background:none;border:none;
+    color:var(--muted);
+    text-decoration:underline;
+    font-size:11px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="scoreboard">
+  <h1>Footy Tipping Ledger</h1>
+  <p>Season Comp &middot; Up to 50 Tippers</p>
+</header>
+
+<div class="banner" id="storageBanner" style="display:none;"></div>
+
+<div class="backup-row">
+  <button class="btn ghost" id="exportBtn">Download Season Backup</button>
+  <button class="btn ghost" id="importBtn">Restore From Backup</button>
+  <input type="file" id="importFile" accept="application/json" style="display:none;">
+</div>
+
+<nav class="tabs" id="tabNav">
+  <button data-tab="fixtures" class="active">Fixtures</button>
+  <button data-tab="tips">Enter Tips</button>
+  <button data-tab="results">Results</button>
+  <button data-tab="ladder">Ladder</button>
+</nav>
+
+<main>
+
+  <!-- FIXTURES TAB -->
+  <section id="tab-fixtures" class="tab-panel">
+    <div class="card">
+      <h2>Tippers <span class="count-tag" id="tipperCount">0 / 50</span></h2>
+      <p class="sub">One name per line. Paste a whole list at once, up to 50.</p>
+      <textarea id="tippersTextarea" rows="6" placeholder="Ash&#10;Manisha&#10;Reya&#10;..."></textarea>
+      <div style="height:10px;"></div>
+      <button class="btn gold" id="saveTippersBtn">Save Tippers</button>
+      <div class="status-line" id="tipperStatus"></div>
+    </div>
+
+    <div class="card">
+      <h2>Add Fixture</h2>
+      <p class="sub">Enter a single game, or use bulk paste below for a whole round or season.</p>
+      <div class="row3">
+        <div>
+          <label for="fRound">Round</label>
+          <input type="text" id="fRound" placeholder="1">
+        </div>
+        <div>
+          <label for="fHome">Home Team</label>
+          <select id="fHome"></select>
+        </div>
+        <div>
+          <label for="fAway">Away Team</label>
+          <select id="fAway"></select>
+        </div>
+        <div>
+          <label for="fDate">Date (optional)</label>
+          <input type="date" id="fDate">
+        </div>
+        <div>
+          <button class="btn" id="addFixtureBtn" style="width:100%;">Add</button>
+        </div>
+      </div>
+      <div class="status-line" id="fixtureStatus"></div>
+
+      <details class="bulk">
+        <summary>Bulk paste fixtures (add a whole round or season at once)</summary>
+        <p class="help">
+          One game per line: <code>round, home team, away team, date</code> (date optional, YYYY-MM-DD).
+          Team names can be full names or short codes like <code>GEE</code>, <code>WCE</code>.<br>
+          Example:<br>
+          <code>1, Carlton, Richmond, 2027-03-19</code><br>
+          <code>1, Collingwood, Essendon</code>
+        </p>
+        <textarea id="bulkFixtureText" rows="6" placeholder="1, Carlton, Richmond, 2027-03-19&#10;1, Collingwood, Essendon"></textarea>
+        <div style="height:10px;"></div>
+        <button class="btn" id="bulkFixtureBtn">Import Fixtures</button>
+        <div id="bulkFixtureOutput"></div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>Season Fixture List</h2>
+      <div id="fixtureList"><p class="empty">Loading fixtures&hellip;</p></div>
+    </div>
+  </section>
+
+  <!-- TIPS TAB -->
+  <section id="tab-tips" class="tab-panel" style="display:none;">
+    <div class="card">
+      <h2>Who's Tipping?</h2>
+      <div class="tipper-chip-row" id="tipsTipperChips"></div>
+      <label for="tipsRoundSelect">Round</label>
+      <select id="tipsRoundSelect" style="max-width:220px;"></select>
+    </div>
+    <div class="card">
+      <h2 id="tipsCardTitle">Pick Your Winners</h2>
+      <p class="sub">Tap a team to lock in your tip. Tap again to change it before saving.</p>
+      <div id="tipsGamesList"><p class="empty">Select a tipper and round above.</p></div>
+      <button class="btn gold" id="saveTipsBtn">Save Tips</button>
+      <div class="status-line" id="tipsStatus"></div>
+    </div>
+  </section>
+
+  <!-- RESULTS TAB -->
+  <section id="tab-results" class="tab-panel" style="display:none;">
+    <div class="card">
+      <h2>Enter Results</h2>
+      <label for="resultsRoundSelect">Round</label>
+      <select id="resultsRoundSelect" style="max-width:220px;"></select>
+      <div id="resultsGamesList" style="margin-top:10px;"><p class="empty">Select a round above.</p></div>
+      <button class="btn gold" id="saveResultsBtn">Save Results</button>
+      <div class="status-line" id="resultsStatus"></div>
+
+      <details class="bulk">
+        <summary>Bulk paste results (enter a whole round at once)</summary>
+        <p class="help">
+          One result per line: <code>round, home team, away team, winner</code>.
+          Winner can be the winning team's name/code, or the word <code>home</code> / <code>away</code>.
+          Draws aren't supported yet — leave drawn games out.<br>
+          Example:<br>
+          <code>1, Carlton, Richmond, Carlton</code><br>
+          <code>1, Collingwood, Essendon, away</code>
+        </p>
+        <textarea id="bulkResultsText" rows="6" placeholder="1, Carlton, Richmond, Carlton&#10;1, Collingwood, Essendon, away"></textarea>
+        <div style="height:10px;"></div>
+        <button class="btn" id="bulkResultsBtn">Import Results</button>
+        <div id="bulkResultsOutput"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- LADDER TAB -->
+  <section id="tab-ladder" class="tab-panel" style="display:none;">
+    <div class="card">
+      <h2>Tipping Ladder</h2>
+      <p class="sub">Points awarded 1 per correct tip, counted only for games with a result entered.</p>
+      <div id="ladderTable"><p class="empty">Loading&hellip;</p></div>
+    </div>
+    <div class="card">
+      <h2>Round-by-Round Scoreboard</h2>
+      <p class="sub">&#10003; correct &middot; &#10007; incorrect &middot; &ndash; no tip or no result yet</p>
+      <div id="ladderMatrix" style="overflow-x:auto;"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="credit">
+  DATA SYNCS VIA SUPABASE &middot; VISIBLE TO ANYONE WITH THIS LINK
+  &nbsp;&middot;&nbsp;
+  <button class="reset-link" id="resetBtn">Reset all data</button>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================================
+     DATABASE SETUP — read this before using the sheet.
+
+     This page stores its data in a free Supabase project instead of relying
+     on Claude. To connect it:
+
+     1. Create a free project at https://supabase.com (no credit card needed).
+     2. In the SQL Editor, run:
+
+          create table footy_tipping (
+            key text primary key,
+            value jsonb not null,
+            updated_at timestamptz default now()
+          );
+          alter table footy_tipping enable row level security;
+          create policy "public read" on footy_tipping for select using (true);
+          create policy "public write" on footy_tipping for insert with check (true);
+          create policy "public update" on footy_tipping for update using (true);
+
+     3. In Project Settings > API, copy your "Project URL" and "anon public" key.
+     4. Paste them into the two constants directly below, replacing the
+        placeholder text, then re-upload this file wherever you're hosting it.
+
+     Anyone with this page's URL can read and write the data (same as anyone
+     you share the link with tipping normally) — don't post the link publicly.
+     ========================================================================= */
+  const SUPABASE_URL = "https://yrevkjrichztuceguhaq.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_gX8iR-bw0E5Vmr2ruBUNsQ_lQS__Mr-";
+  const SUPABASE_TABLE = "footy_tipping";
+
+  function supabaseConfigured(){
+    return SUPABASE_URL.indexOf("YOUR-PROJECT-REF") === -1
+        && SUPABASE_ANON_KEY.indexOf("YOUR-ANON-PUBLIC-KEY") === -1
+        && SUPABASE_URL.indexOf("http") === 0;
+  }
+
+  const MAX_TIPPERS = 50;
+
+  const TEAMS = [
+    {name:"Adelaide Crows", abbr:"ADE", color:"#002B5C"},
+    {name:"Brisbane Lions", abbr:"BRI", color:"#7A003C"},
+    {name:"Carlton", abbr:"CAR", color:"#00285E"},
+    {name:"Collingwood", abbr:"COL", color:"#1A1A1A"},
+    {name:"Essendon", abbr:"ESS", color:"#CC2031"},
+    {name:"Fremantle", abbr:"FRE", color:"#2E1A47"},
+    {name:"Geelong Cats", abbr:"GEE", color:"#1B2A4A"},
+    {name:"Gold Coast Suns", abbr:"GCS", color:"#B90E31"},
+    {name:"GWS Giants", abbr:"GWS", color:"#F47920"},
+    {name:"Hawthorn", abbr:"HAW", color:"#7A4A14"},
+    {name:"Melbourne", abbr:"MEL", color:"#061E42"},
+    {name:"North Melbourne", abbr:"NTH", color:"#013A81"},
+    {name:"Port Adelaide", abbr:"PTA", color:"#00A8E1"},
+    {name:"Richmond", abbr:"RIC", color:"#B8960C"},
+    {name:"St Kilda", abbr:"STK", color:"#ED0F05"},
+    {name:"Sydney Swans", abbr:"SYD", color:"#E21937"},
+    {name:"West Coast Eagles", abbr:"WCE", color:"#1D3F91"},
+    {name:"Western Bulldogs", abbr:"WB", color:"#DA1A35"}
+  ];
+  const teamColor = (name) => (TEAMS.find(t=>t.name===name) || {}).color || "#999";
+
+  function resolveTeam(input){
+    if(!input) return null;
+    const s = String(input).trim().toLowerCase();
+    if(!s) return null;
+    let hit = TEAMS.find(t=>t.name.toLowerCase()===s);
+    if(hit) return hit.name;
+    hit = TEAMS.find(t=>t.abbr.toLowerCase()===s);
+    if(hit) return hit.name;
+    const contains = TEAMS.filter(t=>t.name.toLowerCase().includes(s));
+    if(contains.length===1) return contains[0].name;
+    return null;
+  }
+
+  let tippers = [];
+  let fixtures = [];
+  let results = {};
+  let tips = {};
+
+  let activeTipper = null;
+  let activeTab = "fixtures";
+
+  // ---------- storage helpers (Supabase REST / PostgREST) ----------
+  async function storGet(key){
+    if(!supabaseConfigured()) return null;
+    try{
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?key=eq.${encodeURIComponent(key)}&select=value`,
+        { headers: {
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": "Bearer " + SUPABASE_ANON_KEY
+          }
+        }
+      );
+      if(!res.ok) return null;
+      const rows = await res.json();
+      return (rows && rows.length) ? rows[0].value : null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  async function storSet(key, value){
+    if(!supabaseConfigured()) return false;
+    try{
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+          "Content-Type": "application/json",
+          "Prefer": "resolution=merge-duplicates,return=minimal"
+        },
+        body: JSON.stringify([{key, value}])
+      });
+      return res.ok;
+    }catch(e){
+      return false;
+    }
+  }
+
+  function setStatus(id, msg, cls){
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = "status-line" + (cls ? " "+cls : "");
+    if(msg){
+      setTimeout(()=>{ if(el.textContent===msg){ el.textContent=""; el.className="status-line"; } }, 3000);
+    }
+  }
+
+  // ---------- init ----------
+  async function loadAll(){
+    const [t, f, r, tp] = await Promise.all([
+      storGet("tippers"), storGet("fixtures"), storGet("results"), storGet("tips")
+    ]);
+    tippers = t || [];
+    fixtures = f || [];
+    results = r || {};
+    tips = tp || {};
+  }
+
+  function populateTeamSelects(){
+    ["fHome","fAway"].forEach(id=>{
+      const sel = document.getElementById(id);
+      sel.innerHTML = '<option value="">Select team&hellip;</option>' +
+        TEAMS.map(t=>`<option value="${t.name}">${t.name}</option>`).join("");
+    });
+  }
+
+  function renderTippersTextarea(){
+    document.getElementById("tippersTextarea").value = tippers.join("\n");
+    document.getElementById("tipperCount").textContent = tippers.length + " / " + MAX_TIPPERS;
+  }
+
+  function getRoundsSorted(){
+    const set = new Set(fixtures.map(f=>f.round));
+    return Array.from(set).sort((a,b)=>{
+      const na = parseFloat(a), nb = parseFloat(b);
+      if(!isNaN(na) && !isNaN(nb)) return na-nb;
+      return String(a).localeCompare(String(b));
+    });
+  }
+
+  function populateRoundSelects(){
+    const rounds = getRoundsSorted();
+    ["tipsRoundSelect","resultsRoundSelect"].forEach(id=>{
+      const sel = document.getElementById(id);
+      const prev = sel.value;
+      sel.innerHTML = rounds.length
+        ? rounds.map(r=>`<option value="${r}">Round ${r}</option>`).join("")
+        : '<option value="">No fixtures yet</option>';
+      if(rounds.includes(prev)) sel.value = prev;
+    });
+  }
+
+  // ---------- FIXTURES TAB ----------
+  function renderFixtureList(){
+    const wrap = document.getElementById("fixtureList");
+    if(fixtures.length === 0){
+      wrap.innerHTML = '<div class="empty"><span class="big">No fixtures yet</span>Add this season\'s games above, round by round, or use bulk paste.</div>';
+      return;
+    }
+    const rounds = getRoundsSorted();
+    let html = "";
+    rounds.forEach(rnd=>{
+      html += `<div class="game-meta" style="margin:14px 0 4px;font-size:12px;">ROUND ${rnd}</div>`;
+      fixtures.filter(f=>f.round===rnd).forEach(f=>{
+        html += `
+          <div class="fixture-row">
+            <span class="rnd-badge">${rnd}</span>
+            <span class="matchup">
+              <span class="swatch" style="background:${teamColor(f.home)}"></span>${f.home}
+              <span class="vs">vs</span>
+              <span class="swatch" style="background:${teamColor(f.away)}"></span>${f.away}
+              ${f.date ? `<span class="vs">&middot; ${f.date}</span>` : ""}
+            </span>
+            <button class="del-x" data-id="${f.id}" title="Remove fixture">&times;</button>
+          </div>`;
+      });
+    });
+    wrap.innerHTML = html;
+    wrap.querySelectorAll(".del-x").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        fixtures = fixtures.filter(f=>f.id !== btn.dataset.id);
+        renderFixtureList();
+        populateRoundSelects();
+        renderTipsGames();
+        renderResultsGames();
+        renderLadder();
+        await storSet("fixtures", fixtures);
+      });
+    });
+  }
+
+  document.getElementById("addFixtureBtn").addEventListener("click", async ()=>{
+    const round = document.getElementById("fRound").value.trim();
+    const home = document.getElementById("fHome").value;
+    const away = document.getElementById("fAway").value;
+    const date = document.getElementById("fDate").value;
+    if(!round || !home || !away){
+      setStatus("fixtureStatus","Round, home team and away team are all required.","err");
+      return;
+    }
+    if(home === away){
+      setStatus("fixtureStatus","Home and away teams must be different.","err");
+      return;
+    }
+    const id = "g" + Date.now() + Math.floor(Math.random()*1000);
+    fixtures.push({id, round, home, away, date});
+
+    document.getElementById("fRound").value = round;
+    document.getElementById("fHome").value = "";
+    document.getElementById("fAway").value = "";
+    document.getElementById("fDate").value = "";
+    renderFixtureList();
+    populateRoundSelects();
+    renderTipsGames();
+    renderResultsGames();
+    renderLadder();
+
+    const ok = await storSet("fixtures", fixtures);
+    setStatus("fixtureStatus", ok ? "Fixture added." : "Added, but couldn't sync — see banner above.", ok?"ok":"err");
+  });
+
+  function bulkAddFixtures(text){
+    const lines = text.split("\n").map(l=>l.trim()).filter(Boolean);
+    let added=0, skipped=0;
+    const errors=[];
+    lines.forEach((line, idx)=>{
+      const parts = line.split(",").map(p=>p.trim());
+      if(parts.length<3){
+        errors.push(`Line ${idx+1}: need round, home, away — got "${line}"`);
+        return;
+      }
+      const [roundRaw, homeRaw, awayRaw, dateRaw] = parts;
+      const round = roundRaw.replace(/^round\s*/i,"").trim();
+      const home = resolveTeam(homeRaw);
+      const away = resolveTeam(awayRaw);
+      if(!round){ errors.push(`Line ${idx+1}: missing round`); return; }
+      if(!home){ errors.push(`Line ${idx+1}: couldn't match team "${homeRaw}"`); return; }
+      if(!away){ errors.push(`Line ${idx+1}: couldn't match team "${awayRaw}"`); return; }
+      if(home===away){ errors.push(`Line ${idx+1}: home and away are the same team`); return; }
+      const dup = fixtures.some(f=>f.round===round && f.home===home && f.away===away);
+      if(dup){ skipped++; return; }
+      fixtures.push({id:"g"+Date.now()+Math.floor(Math.random()*10000)+idx, round, home, away, date: dateRaw||""});
+      added++;
+    });
+    return {added, skipped, errors};
+  }
+
+  document.getElementById("bulkFixtureBtn").addEventListener("click", async ()=>{
+    const text = document.getElementById("bulkFixtureText").value;
+    const out = document.getElementById("bulkFixtureOutput");
+    if(!text.trim()){
+      out.innerHTML = '<p class="import-summary warn">Paste some fixture lines first.</p>';
+      return;
+    }
+    const {added, skipped, errors} = bulkAddFixtures(text);
+    renderFixtureList();
+    populateRoundSelects();
+    renderTipsGames();
+    renderResultsGames();
+    renderLadder();
+    const ok = added > 0 ? await storSet("fixtures", fixtures) : true;
+
+    let html = `<p class="import-summary ${errors.length?'warn':'ok'}">Added ${added}, skipped ${skipped} duplicate${skipped===1?'':'s'}${errors.length?`, ${errors.length} line${errors.length===1?'':'s'} had problems`:''}.${added>0 && !ok ? ' Could not sync.' : ''}</p>`;
+    if(errors.length){
+      html += `<ul class="error-list">${errors.map(e=>`<li>${e}</li>`).join("")}</ul>`;
+    }
+    out.innerHTML = html;
+    if(added>0) document.getElementById("bulkFixtureText").value = "";
+  });
+
+  document.getElementById("saveTippersBtn").addEventListener("click", async ()=>{
+    const raw = document.getElementById("tippersTextarea").value;
+    const names = raw.split("\n").map(n=>n.trim()).filter(Boolean);
+    const unique = Array.from(new Set(names));
+    if(unique.length > MAX_TIPPERS){
+      setStatus("tipperStatus", `Max ${MAX_TIPPERS} tippers — you pasted ${unique.length}. Trimmed to the first ${MAX_TIPPERS}.`, "err");
+    }
+    tippers = unique.slice(0, MAX_TIPPERS);
+    renderTippersTextarea();
+    renderTipsTipperChips();
+    renderLadder();
+    const ok = await storSet("tippers", tippers);
+    if(unique.length <= MAX_TIPPERS){
+      setStatus("tipperStatus", ok ? "Tippers saved." : "Saved locally, but couldn't sync — see banner above.", ok?"ok":"err");
+    }
+  });
+
+  // ---------- TIPS TAB ----------
+  function renderTipsTipperChips(){
+    const wrap = document.getElementById("tipsTipperChips");
+    if(tippers.length === 0){
+      wrap.innerHTML = '<span class="empty" style="padding:6px 0;">Add tipper names on the Fixtures tab first.</span>';
+      activeTipper = null;
+      return;
+    }
+    if(!activeTipper || !tippers.includes(activeTipper)) activeTipper = tippers[0];
+    wrap.innerHTML = tippers.map(name=>
+      `<button class="tipper-chip ${name===activeTipper?"active":""}" data-name="${name}">${name}</button>`
+    ).join("");
+    wrap.querySelectorAll(".tipper-chip").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        activeTipper = btn.dataset.name;
+        renderTipsTipperChips();
+        renderTipsGames();
+      });
+    });
+  }
+
+  function currentRound(selectId){
+    const sel = document.getElementById(selectId);
+    return sel.value || null;
+  }
+
+  function renderTipsGames(){
+    const wrap = document.getElementById("tipsGamesList");
+    const title = document.getElementById("tipsCardTitle");
+    const round = currentRound("tipsRoundSelect");
+    if(!activeTipper){
+      wrap.innerHTML = '<p class="empty">Add tipper names on the Fixtures tab first.</p>';
+      title.textContent = "Pick Your Winners";
+      return;
+    }
+    title.textContent = activeTipper + "'s Tips";
+    if(!round){
+      wrap.innerHTML = '<p class="empty">Add fixtures for a round first.</p>';
+      return;
+    }
+    const games = fixtures.filter(f=>f.round===round);
+    if(games.length===0){
+      wrap.innerHTML = '<p class="empty">No games in this round.</p>';
+      return;
+    }
+    const myTips = tips[activeTipper] || {};
+    wrap.innerHTML = games.map(g=>{
+      const pick = myTips[g.id];
+      return `
+        <div class="game-block">
+          <div class="game-meta">ROUND ${g.round}${g.date ? " &middot; "+g.date : ""}</div>
+          <div class="team-toggle" data-game="${g.id}">
+            <button data-team="${g.home}" class="${pick===g.home?"selected":""}" style="${pick===g.home?`background:${teamColor(g.home)};border-color:${teamColor(g.home)};`:""}">
+              <span class="swatch" style="background:${teamColor(g.home)}"></span>${g.home}
+            </button>
+            <button data-team="${g.away}" class="${pick===g.away?"selected":""}" style="${pick===g.away?`background:${teamColor(g.away)};border-color:${teamColor(g.away)};`:""}">
+              <span class="swatch" style="background:${teamColor(g.away)}"></span>${g.away}
+            </button>
+          </div>
+        </div>`;
+    }).join("");
+
+    wrap.querySelectorAll(".team-toggle").forEach(toggle=>{
+      const gameId = toggle.dataset.game;
+      toggle.querySelectorAll("button").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          if(!tips[activeTipper]) tips[activeTipper] = {};
+          const already = tips[activeTipper][gameId] === btn.dataset.team;
+          if(already){
+            delete tips[activeTipper][gameId];
+          }else{
+            tips[activeTipper][gameId] = btn.dataset.team;
+          }
+          renderTipsGames();
+        });
+      });
+    });
+  }
+
+  document.getElementById("tipsRoundSelect").addEventListener("change", renderTipsGames);
+
+  document.getElementById("saveTipsBtn").addEventListener("click", async ()=>{
+    if(!activeTipper){
+      setStatus("tipsStatus","Select a tipper first.","err");
+      return;
+    }
+    renderLadder();
+    const ok = await storSet("tips", tips);
+    setStatus("tipsStatus", ok ? "Tips saved for "+activeTipper+"." : "Saved locally, but couldn't sync — see banner above.", ok?"ok":"err");
+  });
+
+  // ---------- RESULTS TAB ----------
+  function renderResultsGames(){
+    const wrap = document.getElementById("resultsGamesList");
+    const round = currentRound("resultsRoundSelect");
+    if(!round){
+      wrap.innerHTML = '<p class="empty">Add fixtures for a round first.</p>';
+      return;
+    }
+    const games = fixtures.filter(f=>f.round===round);
+    if(games.length===0){
+      wrap.innerHTML = '<p class="empty">No games in this round.</p>';
+      return;
+    }
+    wrap.innerHTML = games.map(g=>{
+      const winner = results[g.id];
+      return `
+        <div class="game-block">
+          <div class="game-meta">ROUND ${g.round}${g.date ? " &middot; "+g.date : ""}</div>
+          <div class="team-toggle" data-game="${g.id}">
+            <button data-team="${g.home}" class="${winner===g.home?"selected":""}" style="${winner===g.home?`background:${teamColor(g.home)};border-color:${teamColor(g.home)};`:""}">
+              <span class="swatch" style="background:${teamColor(g.home)}"></span>${g.home}
+            </button>
+            <button data-team="${g.away}" class="${winner===g.away?"selected":""}" style="${winner===g.away?`background:${teamColor(g.away)};border-color:${teamColor(g.away)};`:""}">
+              <span class="swatch" style="background:${teamColor(g.away)}"></span>${g.away}
+            </button>
+          </div>
+        </div>`;
+    }).join("");
+
+    wrap.querySelectorAll(".team-toggle").forEach(toggle=>{
+      const gameId = toggle.dataset.game;
+      toggle.querySelectorAll("button").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const already = results[gameId] === btn.dataset.team;
+          if(already){
+            delete results[gameId];
+          }else{
+            results[gameId] = btn.dataset.team;
+          }
+          renderResultsGames();
+        });
+      });
+    });
+  }
+
+  document.getElementById("resultsRoundSelect").addEventListener("change", renderResultsGames);
+
+  document.getElementById("saveResultsBtn").addEventListener("click", async ()=>{
+    renderLadder();
+    const ok = await storSet("results", results);
+    setStatus("resultsStatus", ok ? "Results saved." : "Saved locally, but couldn't sync — see banner above.", ok?"ok":"err");
+  });
+
+  function bulkEnterResults(text){
+    const lines = text.split("\n").map(l=>l.trim()).filter(Boolean);
+    let applied=0;
+    const errors=[];
+    lines.forEach((line, idx)=>{
+      const parts = line.split(",").map(p=>p.trim());
+      if(parts.length<4){
+        errors.push(`Line ${idx+1}: need round, home, away, winner — got "${line}"`);
+        return;
+      }
+      const [roundRaw, homeRaw, awayRaw, winnerRaw] = parts;
+      const round = roundRaw.replace(/^round\s*/i,"").trim();
+      const home = resolveTeam(homeRaw);
+      const away = resolveTeam(awayRaw);
+      if(!home || !away){
+        errors.push(`Line ${idx+1}: couldn't match teams "${homeRaw}" / "${awayRaw}"`);
+        return;
+      }
+      let winner = resolveTeam(winnerRaw);
+      if(!winner){
+        if(/^home$/i.test(winnerRaw.trim())) winner = home;
+        else if(/^away$/i.test(winnerRaw.trim())) winner = away;
+      }
+      let game = fixtures.find(f=>f.round===round && f.home===home && f.away===away);
+      if(!game) game = fixtures.find(f=>f.round===round && f.home===away && f.away===home);
+      if(!game){
+        errors.push(`Line ${idx+1}: no fixture found for Round ${round}, ${homeRaw} v ${awayRaw}`);
+        return;
+      }
+      if(winner!==game.home && winner!==game.away){
+        errors.push(`Line ${idx+1}: winner "${winnerRaw}" doesn't match either team in that game`);
+        return;
+      }
+      results[game.id] = winner;
+      applied++;
+    });
+    return {applied, errors};
+  }
+
+  document.getElementById("bulkResultsBtn").addEventListener("click", async ()=>{
+    const text = document.getElementById("bulkResultsText").value;
+    const out = document.getElementById("bulkResultsOutput");
+    if(!text.trim()){
+      out.innerHTML = '<p class="import-summary warn">Paste some result lines first.</p>';
+      return;
+    }
+    const {applied, errors} = bulkEnterResults(text);
+    renderResultsGames();
+    renderLadder();
+    const ok = applied > 0 ? await storSet("results", results) : true;
+
+    let html = `<p class="import-summary ${errors.length?'warn':'ok'}">Applied ${applied} result${applied===1?'':'s'}${errors.length?`, ${errors.length} line${errors.length===1?'':'s'} had problems`:''}.${applied>0 && !ok ? ' Could not sync.' : ''}</p>`;
+    if(errors.length){
+      html += `<ul class="error-list">${errors.map(e=>`<li>${e}</li>`).join("")}</ul>`;
+    }
+    out.innerHTML = html;
+    if(applied>0) document.getElementById("bulkResultsText").value = "";
+  });
+
+  // ---------- LADDER TAB ----------
+  function computeScores(){
+    return tippers.map(name=>{
+      let points = 0, played = 0;
+      fixtures.forEach(g=>{
+        const winner = results[g.id];
+        if(!winner) return;
+        const pick = (tips[name] || {})[g.id];
+        if(!pick) return;
+        played++;
+        if(pick === winner) points++;
+      });
+      return {name, points, played};
+    }).sort((a,b)=> b.points - a.points);
+  }
+
+  function renderLadder(){
+    const wrap = document.getElementById("ladderTable");
+    if(tippers.length===0){
+      wrap.innerHTML = '<div class="empty"><span class="big">No tippers yet</span>Add names on the Fixtures tab to start the ladder.</div>';
+      document.getElementById("ladderMatrix").innerHTML = "";
+      return;
+    }
+    const scored = computeScores();
+    const maxPts = Math.max(1, ...scored.map(s=>s.points));
+    let html = `<table class="ladder"><thead><tr><th>#</th><th>Tipper</th><th>Correct</th><th>Tipped</th></tr></thead><tbody>`;
+    scored.forEach((s,i)=>{
+      html += `<tr>
+        <td>${i+1}</td>
+        <td>${s.name}
+          <div class="bar-wrap"><div class="bar" style="width:${(s.points/maxPts*100).toFixed(0)}%"></div></div>
+        </td>
+        <td class="points-cell">${s.points}</td>
+        <td>${s.played}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+    wrap.innerHTML = html;
+
+    const matrixWrap = document.getElementById("ladderMatrix");
+    const gamesWithResults = fixtures.filter(f=>results[f.id]);
+    if(gamesWithResults.length===0){
+      matrixWrap.innerHTML = '<p class="empty">No results entered yet.</p>';
+      return;
+    }
+    const roundsOrdered = getRoundsSorted();
+    let mhtml = `<table class="grid-matrix"><thead><tr><th>Game</th>${tippers.map(n=>`<th>${n}</th>`).join("")}</tr></thead><tbody>`;
+    roundsOrdered.forEach(rnd=>{
+      gamesWithResults.filter(g=>g.round===rnd).forEach(g=>{
+        const winner = results[g.id];
+        mhtml += `<tr><td style="text-align:left;">R${g.round}: ${TEAMS.find(t=>t.name===g.home)?.abbr || g.home} v ${TEAMS.find(t=>t.name===g.away)?.abbr || g.away}</td>`;
+        tippers.forEach(name=>{
+          const pick = (tips[name]||{})[g.id];
+          let cell = '<span class="dash">&ndash;</span>';
+          if(pick){
+            cell = pick===winner ? '<span class="tick">&#10003;</span>' : '<span class="cross">&#10007;</span>';
+          }
+          mhtml += `<td>${cell}</td>`;
+        });
+        mhtml += `</tr>`;
+      });
+    });
+    mhtml += `</tbody></table>`;
+    matrixWrap.innerHTML = mhtml;
+  }
+
+  // ---------- TABS ----------
+  document.getElementById("tabNav").addEventListener("click", (e)=>{
+    const btn = e.target.closest("button[data-tab]");
+    if(!btn) return;
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll("#tabNav button").forEach(b=>b.classList.toggle("active", b===btn));
+    document.querySelectorAll(".tab-panel").forEach(p=>p.style.display="none");
+    document.getElementById("tab-"+activeTab).style.display="block";
+    if(activeTab==="ladder") renderLadder();
+    if(activeTab==="tips") { renderTipsTipperChips(); renderTipsGames(); }
+    if(activeTab==="results") renderResultsGames();
+  });
+
+  // ---------- BACKUP / RESTORE ----------
+  function exportData(){
+    const payload = {tippers, fixtures, results, tips, exportedAt: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "footy-tipping-backup-" + new Date().toISOString().slice(0,10) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  async function importData(file){
+    try{
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if(!data || typeof data !== "object") throw new Error("bad file");
+      tippers = Array.isArray(data.tippers) ? data.tippers.slice(0, MAX_TIPPERS) : tippers;
+      fixtures = Array.isArray(data.fixtures) ? data.fixtures : fixtures;
+      results = (data.results && typeof data.results === "object") ? data.results : results;
+      tips = (data.tips && typeof data.tips === "object") ? data.tips : tips;
+
+      renderTippersTextarea();
+      renderFixtureList();
+      populateRoundSelects();
+      renderTipsTipperChips();
+      renderTipsGames();
+      renderResultsGames();
+      renderLadder();
+
+      const results_ = await Promise.all([
+        storSet("tippers", tippers),
+        storSet("fixtures", fixtures),
+        storSet("results", results),
+        storSet("tips", tips)
+      ]);
+      const allOk = results_.every(Boolean);
+      alert(allOk
+        ? "Backup restored and synced."
+        : "Backup restored on this screen, but couldn't sync — see banner above.");
+    }catch(e){
+      alert("Couldn't read that file — make sure it's a backup exported from this sheet.");
+    }
+  }
+
+  document.getElementById("exportBtn").addEventListener("click", exportData);
+  document.getElementById("importBtn").addEventListener("click", ()=>{
+    document.getElementById("importFile").click();
+  });
+  document.getElementById("importFile").addEventListener("change", (e)=>{
+    const file = e.target.files[0];
+    if(file) importData(file);
+    e.target.value = "";
+  });
+
+  async function checkStorageAvailability(){
+    const banner = document.getElementById("storageBanner");
+    if(!supabaseConfigured()){
+      banner.style.display = "block";
+      banner.innerHTML = "<strong>Setup needed:</strong> this sheet isn't connected to a database yet. Open this file's source and follow the setup notes at the top of the &lt;script&gt; section to add your Supabase URL and key. Until then, use <strong>Download Season Backup</strong> to keep your data.";
+      return false;
+    }
+    const wrote = await storSet("__probe__", {ok:true, t:Date.now()});
+    if(!wrote){
+      banner.style.display = "block";
+      banner.innerHTML = "<strong>Heads up:</strong> couldn't reach the database — double check your Supabase URL/key and that the table and policies were created. Use <strong>Download Season Backup</strong> to keep a copy meanwhile.";
+      return false;
+    }
+    banner.style.display = "none";
+    return true;
+  }
+
+  // ---------- RESET ----------
+  document.getElementById("resetBtn").addEventListener("click", async ()=>{
+    if(!confirm("Clear all fixtures, tippers, tips and results for everyone using this sheet? This can't be undone.")) return;
+    tippers = []; fixtures = []; results = {}; tips = {};
+    renderTippersTextarea();
+    renderFixtureList();
+    populateRoundSelects();
+    renderTipsTipperChips();
+    renderTipsGames();
+    renderResultsGames();
+    renderLadder();
+    await Promise.all([
+      storSet("tippers", tippers),
+      storSet("fixtures", fixtures),
+      storSet("results", results),
+      storSet("tips", tips)
+    ]);
+  });
+
+  // ---------- BOOT ----------
+  (async function init(){
+    populateTeamSelects();
+    await loadAll();
+    renderTippersTextarea();
+    renderFixtureList();
+    populateRoundSelects();
+    renderTipsTipperChips();
+    renderTipsGames();
+    renderResultsGames();
+    renderLadder();
+    checkStorageAvailability();
+  })();
+
+})();
+</script>
+
+</body>
+</html>

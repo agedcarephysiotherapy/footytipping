@@ -8,26 +8,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --brand:#CC3300;
-    --brand-dark:#A32900;
-    --brand-light:#F7E4DA;
-    --ink:#2B2925;
-    --muted:#7A756D;
-    --paper:#FAF8F5;
+    --brand:#0066CC;
+    --brand-dark:#004A99;
+    --brand-light:#E6F0FF;
+    --ink:#111111;
+    --muted:#4A4A4A;
+    --paper:#F7F7F7;
     --card:#FFFFFF;
-    --line:#E7E1D8;
-    --success:#2F7D4F;
-    --danger:#B23A2E;
+    --line:#B8B8B8;
+    --success:#006B3C;
+    --danger:#B00020;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:
-      radial-gradient(circle at 15% 0%, rgba(204,51,0,0.04), transparent 40%),
-      radial-gradient(circle at 100% 30%, rgba(204,51,0,0.03), transparent 35%),
-      var(--paper);
+    background:var(--paper);
     color:var(--ink);
     font-family:'Inter',sans-serif;
+    font-size:16px;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
@@ -59,13 +57,13 @@
     display:inline-block;
     font-family:'Inter',sans-serif;
     font-weight:600;
-    font-size:12px;
+    font-size:14px;
     letter-spacing:1px;
     text-transform:uppercase;
     color:var(--brand);
     background:var(--brand-light);
     padding:6px 16px;
-    border-radius:20px;
+    border-radius:6px;
     margin:0;
   }
   .banner{
@@ -87,7 +85,7 @@
     flex-wrap:wrap;
     padding:18px 20px 20px;
   }
-  .backup-row .btn{font-size:12px;padding:9px 14px;}
+  .backup-row .btn{font-size:14px;padding:9px 14px;}
   nav.tabs{
     display:flex;
     justify-content:center;
@@ -102,13 +100,13 @@
     min-width:100px;
     background:transparent;
     border:none;
-    border-radius:10px;
+    border-radius:6px;
     color:var(--muted);
     font-family:'Inter',sans-serif;
     font-weight:600;
-    font-size:13px;
-    letter-spacing:0.2px;
-    padding:11px 14px;
+    font-size:16px;
+    letter-spacing:0;
+    padding:13px 16px;
     cursor:pointer;
     transition:color .15s ease, background .15s ease;
   }
@@ -126,7 +124,7 @@
   .card{
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:8px;
     padding:24px;
     margin-bottom:18px;
     box-shadow:0 1px 2px rgba(43,41,37,0.03), 0 12px 28px -20px rgba(43,41,37,0.18);
@@ -134,20 +132,20 @@
   .card h2{
     font-family:'Poppins',sans-serif;
     font-weight:700;
-    font-size:18px;
+    font-size:21px;
     letter-spacing:-0.2px;
     margin:0 0 4px;
     color:var(--ink);
   }
   .card .sub{
-    font-size:13.5px;
+    font-size:16px;
     color:var(--muted);
     margin:0 0 16px;
     line-height:1.5;
   }
   label{
     display:block;
-    font-size:12px;
+    font-size:14px;
     font-weight:600;
     letter-spacing:0.2px;
     text-transform:uppercase;
@@ -159,10 +157,10 @@
     width:100%;
     padding:10px 13px;
     border:1.5px solid var(--line);
-    border-radius:10px;
+    border-radius:6px;
     font-family:'Inter',sans-serif;
-    font-size:14.5px;
-    background:var(--paper);
+    font-size:17px;
+    background:#FFFFFF;
     color:var(--ink);
     transition:border-color .15s ease, box-shadow .15s ease;
   }
@@ -176,10 +174,10 @@
   input:focus, select:focus, textarea:focus{
     outline:none;
     border-color:var(--brand);
-    box-shadow:0 0 0 4px var(--brand-light);
+    box-shadow:0 0 0 4px #99C7FF;
   }
   button:focus-visible{
-    outline:2px solid var(--brand);
+    outline:3px solid #005FCC;
     outline-offset:2px;
   }
   .row{
@@ -208,7 +206,7 @@
     font-size:13px;
     letter-spacing:0.2px;
     cursor:pointer;
-    border-radius:10px;
+    border-radius:6px;
     transition:background .15s ease, transform .1s ease, box-shadow .15s ease;
     box-shadow:0 2px 6px -2px rgba(204,51,0,0.4);
   }
@@ -227,7 +225,7 @@
 
   details.bulk{
     border:1.5px dashed var(--line);
-    border-radius:10px;
+    border-radius:6px;
     padding:14px 16px;
     margin-top:16px;
     background:var(--paper);
@@ -278,13 +276,13 @@
     gap:10px;
     padding:10px 0;
     border-bottom:1px solid var(--line);
-    font-size:14.5px;
+    font-size:16px;
   }
   .fixture-row:last-child{border-bottom:none;}
   .rnd-badge{
     font-family:'Inter',sans-serif;
     font-weight:700;
-    font-size:12px;
+    font-size:14px;
     background:var(--brand-light);
     color:var(--brand-dark);
     padding:4px 7px;
@@ -299,12 +297,12 @@
     flex:none;
     border:1px solid rgba(0,0,0,0.15);
   }
-  .vs{color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;}
+  .vs{color:var(--muted);font-family:'Inter',sans-serif;font-size:14px;font-weight:500;}
 
   .team-toggle{
     display:flex;
     border:1.5px solid var(--line);
-    border-radius:10px;
+    border-radius:6px;
     overflow:hidden;
     margin:6px 0 14px;
   }
@@ -389,7 +387,7 @@
   .grid-matrix{
     width:100%;
     border-collapse:collapse;
-    font-size:12px;
+    font-size:14px;
     margin-top:10px;
   }
   .grid-matrix th, .grid-matrix td{
@@ -435,7 +433,7 @@
   .tipper-chip{
     padding:9px 15px;
     border:1.5px solid var(--line);
-    border-radius:20px;
+    border-radius:6px;
     background:var(--card);
     cursor:pointer;
     font-size:13.5px;
@@ -450,7 +448,7 @@
   .status-line{
     font-family:'Inter',sans-serif;
     font-weight:500;
-    font-size:12px;
+    font-size:14px;
     color:var(--muted);
     margin-top:8px;
     min-height:14px;
@@ -462,14 +460,14 @@
     border:none;
     color:var(--danger);
     cursor:pointer;
-    font-size:18px;
+    font-size:21px;
     line-height:1;
     padding:4px 6px;
   }
   .count-tag{
     font-family:'Inter',sans-serif;
     font-weight:600;
-    font-size:12px;
+    font-size:14px;
     color:var(--muted);
     float:right;
   }
@@ -503,7 +501,7 @@
   }
   .group-indicator{
     font-family:'Inter',sans-serif;
-    font-size:12px;
+    font-size:14px;
     color:var(--muted);
     margin-top:12px;
     display:flex;
@@ -517,7 +515,7 @@
     background:none;border:none;
     color:var(--muted);
     text-decoration:underline;
-    font-size:12px;
+    font-size:14px;
     cursor:pointer;
     font-family:'Inter',sans-serif;
     padding:0;
@@ -692,7 +690,7 @@
   }
   .card .sub{
     color:#777;
-    font-size:12px;
+    font-size:14px;
   }
 
   label{
@@ -876,6 +874,31 @@
     .card{border-radius:0;padding:20px;}
     .backup-row{flex-direction:row;padding:12px 14px;}
     .backup-row .btn{width:auto;flex:1;}
+  }
+
+
+  /* Older-adult accessibility: larger text, strong contrast and clearer controls */
+  body, button, input, select, textarea { -webkit-text-size-adjust:100%; }
+  button, input, select, textarea { min-height:46px; }
+  .btn { min-height:48px; }
+  nav.tabs button { min-height:50px; }
+  .card { box-shadow:0 2px 6px rgba(0,0,0,0.12); }
+  .card .sub, .game-meta, .status-line, .help { font-size:15px; }
+  label { font-size:14px; color:#222; }
+  .fixture-row { font-size:16px; }
+  .team-toggle button { font-size:16px; min-height:56px; }
+  .tipper-chip { font-size:16px; min-height:46px; }
+  table.ladder th { font-size:14px; color:#222; }
+  table.ladder td { font-size:16px; }
+  .points-cell { font-size:20px; }
+  .rnd-badge { font-size:14px; }
+  .empty { font-size:16px; }
+  .empty .big { font-size:22px; }
+  @media (max-width:640px){
+    body { font-size:17px; }
+    .card { padding:20px; }
+    nav.tabs button { font-size:15px; }
+    .team-toggle button { font-size:15px; }
   }
 
 </style>
@@ -1318,7 +1341,7 @@
     const rounds = getRoundsSorted();
     let html = "";
     rounds.forEach(rnd=>{
-      html += `<div class="game-meta" style="margin:14px 0 4px;font-size:12px;">ROUND ${rnd}</div>`;
+      html += `<div class="game-meta" style="margin:14px 0 4px;font-size:14px;">ROUND ${rnd}</div>`;
       fixtures.filter(f=>f.round===rnd).forEach(f=>{
         html += `
           <div class="fixture-row">
@@ -1665,7 +1688,7 @@
   function renderLadder(){
     const wrap = document.getElementById("ladderTable");
     if(tippers.length===0){
-      wrap.innerHTML = '<div class="empty"><span class="big">No tippers yet</span>Add names on the Fixtures tab to start the ladder.</div>';
+      wrap.innerHTML = '<div class="empty"><span class="big">No tippers yet</span>Add names on the Fixtures tab to start the leaderboard.</div>';
       document.getElementById("ladderMatrix").innerHTML = "";
       return;
     }

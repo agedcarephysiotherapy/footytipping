@@ -1,0 +1,1 @@
+const menu=document.querySelector('.menu');if(menu){menu.addEventListener('click',()=>document.querySelector('.nav').classList.toggle('open'));}function testForm(e){e.preventDefault();const m=document.getElementById('message');if(m)m.textContent='Test only: this form is not connected to email yet.';return false;}
